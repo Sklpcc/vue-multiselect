@@ -98,9 +98,14 @@
                 </span>
               </li>
             </template>
-            <li v-show="showNoResults && (filteredOptions.length === 0 && search && !loading)">
-              <span class="multiselect__option">
-                <slot name="noResult">No elements found. Consider changing the search query.</slot>
+            <li class="multiselect__element" v-show="showNoResults && (filteredOptions.length === 0 && search && !loading)">
+              <span class="multiselect__option"
+                    :class="clickableNoResults ? optionHighlight(0, null) : ''"
+                    @mouseenter.self="pointerSet(0)"
+                    @click.stop="clickableNoResults ? noResult(search) : ''">
+                <slot
+                  name="noResult"
+                  :search="search">No elements found. Consider changing the search query.</slot>
               </span>
             </li>
             <slot name="afterList"></slot>
@@ -223,6 +228,10 @@
       showNoResults: {
         type: Boolean,
         default: true
+      },
+      clickableNoResults: {
+        type: Boolean,
+        default: false
       },
       tabindex: {
         type: Number,

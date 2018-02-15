@@ -625,6 +625,9 @@ export default {
         this.prefferedOpenDirection = 'above'
         this.optimizedHeight = Math.min(spaceAbove - 40, this.maxHeight)
       }
+    },
+    noResult (search) {
+      this.$emit('no-result', search)
     }
   }
 }

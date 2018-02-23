@@ -11,14 +11,14 @@
         @search-change="onSearchChange",
         :loading="loading",
         @no-result="onNoResult",
-        :clickable-no-results="false"
+        :clickable-no-results="true",
+        :internal-search="false"
         )
             template(slot="noResult", slot-scope="props") Crear {{ props.search }}...
 </template>
 
 <script>
 import Multiselect from 'vue-multiselect'
-import axios from 'axios'
 
 export default {
   components: {
@@ -39,17 +39,16 @@ export default {
     onSearchChange (searchQuery, id) {
       console.log(searchQuery)
       this.loading = true
-      axios.get('http://localhost:3001/test/' + searchQuery)
-        .then(response => {
-// eslint-disable-next-line no-undef
-          this.options = response.data
+      new Promise(resolve => {
+        setTimeout(resolve, 200)
+      })
+      .then(response => {
+        this.options = ['dedalo', 'deuteronomio', 'dedo', 'datil', 'docil', 'dedicado']
+        .filter(item => {
+          return item.startsWith(searchQuery)
         })
-        .catch(reason => {
-          console.error(reason)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+        this.loading = false;
+      })
     },
     onNoResult (search) {
       window.alert('Abriendo ventana modal para crear un nuevo registro ' + search)

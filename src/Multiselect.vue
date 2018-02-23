@@ -77,7 +77,7 @@
               <li class="multiselect__element" v-for="(option, index) of filteredOptions" :key="index">
                 <span
                   v-if="!(option && (option.$isLabel || option.$isDisabled))"
-                  :class="optionHighlight(index, option)"
+                  :class="highlightSelectedOption ? optionEval(index, option) : optionHighlight(index)"
                   @click.stop="select(option)"
                   @mouseenter.self="pointerSet(index)"
                   :data-select="option && option.isTag ? tagPlaceholder : selectLabelText"
@@ -90,7 +90,7 @@
                 </span>
                 <span
                   v-if="option && (option.$isLabel || option.$isDisabled)"
-                  :class="optionHighlight(index, option)"
+                  :class="highlightSelectedOption ? optionEval(index, option) : optionHighlight(index)"
                   class="multiselect__option multiselect__option--disabled">
                     <slot name="option" :option="option" :search="search">
                       <span>{{ getOptionLabel(option) }}</span>
@@ -100,7 +100,7 @@
             </template>
             <li class="multiselect__element" v-show="showNoResults && (filteredOptions.length === 0 && search && !loading)">
               <span class="multiselect__option"
-                    :class="clickableNoResults ? optionHighlight(0, null) : ''"
+                    :class="clickableNoResults ? optionHighlight(0) : ''"
                     @mouseenter.self="pointerSet(0)"
                     @click.stop="clickableNoResults ? noResult(search) : ''">
                 <slot
@@ -236,6 +236,10 @@
       tabindex: {
         type: Number,
         default: 0
+      },
+      highlightSelectedOption: {
+        type: Boolean,
+        default: true
       }
     },
     computed: {

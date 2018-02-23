@@ -37,10 +37,20 @@ export default {
     }
   },
   methods: {
-    optionHighlight (index, option) {
+    optionHighlight (index) {
       return {
-        'multiselect__option--highlight': index === this.pointer && this.showPointer,
+        'multiselect__option--highlight': index === this.pointer && this.showPointer
+      }
+    },
+    optionSelect (option) {
+      return {
         'multiselect__option--selected': this.isSelected(option)
+      }
+    },
+    optionEval (index, option) {
+      return {
+        ...this.optionSelect(option),
+        ...this.optionHighlight(index)
       }
     },
     addPointerElement ({ key } = 'Enter') {
